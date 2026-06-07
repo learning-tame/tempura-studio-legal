@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>mymap サポート</title>
+<meta name="description" content="mymap — 世界を解放するマップ. お問い合わせ・よくある質問・データ削除依頼の窓口。">
+<meta property="og:title" content="mymap サポート">
+<meta property="og:description" content="mymap のお問い合わせ窓口・よくある質問">
+<meta property="og:image" content="./assets/mymap-icon.png">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/png" href="./assets/mymap-icon-192.png">
+<style>
+  :root {
+    --bg: #0b1220;
+    --bg-elev: #131c30;
+    --bg-elev-2: #1a2540;
+    --border: #25324f;
+    --text: #e8eef8;
+    --text-dim: #9aa8c2;
+    --accent: #7aa2ff;
+    --accent-strong: #4a7cff;
+    --accent-glow: rgba(122, 162, 255, 0.18);
+    --success: #56d3a6;
+    --radius: 14px;
+    --max-w: 760px;
+  }
+
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #f6f8fc;
+      --bg-elev: #ffffff;
+      --bg-elev-2: #eef2fa;
+      --border: #dde4f0;
+      --text: #0e1626;
+      --text-dim: #4a5670;
+      --accent: #2a5cff;
+      --accent-strong: #1d46d9;
+      --accent-glow: rgba(42, 92, 255, 0.12);
+      --success: #1aa276;
+    }
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue",
+                 "Hiragino Sans", "Hiragino Kaku Gothic ProN",
+                 "Noto Sans JP", Meiryo, sans-serif;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    background-image:
+      radial-gradient(circle at 20% 0%, rgba(122, 162, 255, 0.10), transparent 50%),
+      radial-gradient(circle at 80% 10%, rgba(86, 211, 166, 0.06), transparent 45%);
+    background-attachment: fixed;
+    min-height: 100vh;
+  }
+
+  .container {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 32px 20px 80px;
+  }
+
+  /* ---- Hero ---- */
+  .hero {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 28px;
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 28px;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.02) inset,
+                0 20px 40px -20px var(--accent-glow);
+  }
+
+  .hero-icon {
+    width: 72px;
+    height: 72px;
+    border-radius: 18px;
+    flex-shrink: 0;
+    box-shadow: 0 6px 20px -6px var(--accent-glow);
+  }
+
+  .hero-text h1 {
+    margin: 0 0 4px;
+    font-size: 22px;
+    letter-spacing: -0.01em;
+  }
+
+  .hero-text .sub {
+    margin: 0;
+    color: var(--text-dim);
+    font-size: 14px;
+  }
+
+  .hero-text .badge {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 2px 10px;
+    background: var(--accent-glow);
+    color: var(--accent);
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  /* ---- Section ---- */
+  section {
+    margin-bottom: 28px;
+  }
+
+  h2 {
+    font-size: 18px;
+    margin: 0 0 14px;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  h2::before {
+    content: "";
+    display: inline-block;
+    width: 4px;
+    height: 18px;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+
+  /* ---- Contact card ---- */
+  .contact-card {
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px;
+  }
+
+  .contact-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+  }
+
+  .contact-row + .contact-row {
+    border-top: 1px solid var(--border);
+  }
+
+  .contact-row .label {
+    width: 88px;
+    flex-shrink: 0;
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+
+  .contact-row a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+    word-break: break-all;
+  }
+
+  .contact-row a:hover {
+    text-decoration: underline;
+  }
+
+  .contact-note {
+    margin: 14px 0 0;
+    padding: 12px 14px;
+    background: var(--bg-elev-2);
+    border-radius: 10px;
+    color: var(--text-dim);
+    font-size: 13px;
+  }
+
+  /* ---- Info list ---- */
+  .info-list {
+    margin: 14px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .info-list li {
+    padding: 8px 0 8px 22px;
+    position: relative;
+    color: var(--text-dim);
+    font-size: 14px;
+  }
+
+  .info-list li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    top: 8px;
+    color: var(--success);
+    font-weight: 700;
+  }
+
+  /* ---- FAQ accordion ---- */
+  .faq {
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  details {
+    border-bottom: 1px solid var(--border);
+  }
+
+  details:last-child {
+    border-bottom: none;
+  }
+
+  summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 18px 22px;
+    font-weight: 500;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    transition: background 0.15s;
+  }
+
+  summary:hover {
+    background: var(--bg-elev-2);
+  }
+
+  summary::-webkit-details-marker { display: none; }
+
+  summary::after {
+    content: "+";
+    color: var(--accent);
+    font-size: 22px;
+    font-weight: 300;
+    line-height: 1;
+    transition: transform 0.2s;
+  }
+
+  details[open] summary::after {
+    transform: rotate(45deg);
+  }
+
+  .faq-body {
+    padding: 0 22px 20px;
+    color: var(--text-dim);
+    font-size: 14px;
+  }
+
+  .faq-body p {
+    margin: 0 0 10px;
+  }
+
+  .faq-body p:last-child { margin-bottom: 0; }
+
+  .faq-body code {
+    background: var(--bg-elev-2);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    color: var(--text);
+  }
+
+  .faq-body strong {
+    color: var(--text);
+  }
+
+  /* ---- Footer ---- */
+  footer {
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+
+  footer a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  footer a:hover { text-decoration: underline; }
+
+  footer .meta {
+    margin-top: 12px;
+    font-size: 12px;
+    opacity: 0.7;
+  }
+
+  @media (max-width: 480px) {
+    .container { padding: 20px 16px 60px; }
+    .hero { padding: 20px; gap: 14px; }
+    .hero-icon { width: 56px; height: 56px; border-radius: 14px; }
+    .hero-text h1 { font-size: 19px; }
+    .contact-row { flex-direction: column; align-items: flex-start; gap: 4px; }
+    .contact-row .label { width: auto; }
+    summary { padding: 16px 18px; font-size: 14px; }
+    .faq-body { padding: 0 18px 18px; }
+  }
+</style>
+</head>
+<body>
+<main class="container">
+
+  <div class="hero">
+    <img src="./assets/mymap-icon.png" alt="mymap icon" class="hero-icon">
+    <div class="hero-text">
+      <h1>mymap サポート</h1>
+      <p class="sub">世界を解放するマップ — お問い合わせ窓口</p>
+      <span class="badge">最終更新日: 2026-06-08</span>
+    </div>
+  </div>
+
+  <section>
+    <h2>お問い合わせ</h2>
+    <div class="contact-card">
+      <div class="contact-row">
+        <span class="label">メール</span>
+        <a href="mailto:droid1729@gmail.com">droid1729@gmail.com</a>
+      </div>
+      <div class="contact-row">
+        <span class="label">開発者</span>
+        <span>tempura-studio (個人)</span>
+      </div>
+      <div class="contact-row">
+        <span class="label">対応時間</span>
+        <span style="color: var(--text-dim);">数日〜1 週間ほどお時間をいただく場合があります</span>
+      </div>
+
+      <p class="contact-note">
+        お問い合わせの際は、可能であれば下記の情報を添えていただけると調査がスムーズです。
+      </p>
+      <ul class="info-list">
+        <li>iOS のバージョン (例: iOS 18.3)</li>
+        <li>端末のモデル (例: iPhone 15 Pro)</li>
+        <li>本アプリのバージョン (アプリ内「メニュー &gt; このアプリについて」)</li>
+        <li>不具合の場合は再現手順と発生時刻 (おおよそで構いません)</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>よくある質問</h2>
+    <div class="faq">
+
+      <details>
+        <summary>地図が解放されません / GPS が反応しません</summary>
+        <div class="faq-body">
+          <p>iOS の <strong>「設定 &gt; プライバシーとセキュリティ &gt; 位置情報サービス &gt; mymap」</strong> で、位置情報の利用が <strong>「常に」</strong> または <strong>「このアプリの使用中」</strong> のいずれかになっているかご確認ください (「許可しない」になっていると記録されません)。</p>
+          <p>バックグラウンド中は、ステータスバーに青いインジケータが表示されている間だけ位置情報を取得しています。「このアプリの使用中」の場合でも、この仕組みでバックグラウンド記録が継続します。</p>
+          <p>権限を正しく設定しても、GPS の特性上、<strong>位置情報そのものが取得できない / 記録に残らないケース</strong>があります。</p>
+          <ul class="info-list" style="margin-top: 6px;">
+            <li>電車や車などで高速に移動している区間</li>
+            <li>長いトンネル、地下鉄、深い屋内、立体駐車場の内部など、GPS が届かない場所</li>
+            <li>iOS の省電力モード中や、端末のバッテリーが極端に少ないとき</li>
+            <li>他アプリの大量の位置利用や、システム側の判断で GPS が一時停止されたとき</li>
+          </ul>
+          <p style="margin-top: 10px;">これらのケースでは、解放に時間がかかるだけでなく、<strong>その区間がそもそも地図に残らないことがあります</strong>。両端の地点がうまく取れていれば自動で経路が補間されますが、両端も取れていない場合は補間も働きません。GPS の仕組み上避けられないので、あらかじめご了承ください。</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>バックアップしたデータを別の端末に復元したい</summary>
+        <div class="faq-body">
+          <p>メニュー &gt; アカウントから「クラウドバックアップを有効化」を選択し、<strong>Apple または Google アカウント</strong>でサインインしてください。同じアカウントで新しい端末にサインインすると、保存済みの訪問データが復元されます。</p>
+          <p>クラウドバックアップを有効化していない場合は、データは端末内のみに保存されているため、アプリを削除したり機種変更したりするとデータは失われます。</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>データをエクスポートしたい</summary>
+        <div class="faq-body">
+          <p>メニュー &gt; データ管理から <code>NDJSON</code> / <code>GeoJSON</code> 形式でエクスポートできます。</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>アカウント / データを完全に削除したい</summary>
+        <div class="faq-body">
+          <p>クラウドバックアップを有効化している場合は、<strong>メニュー &gt; アカウント &gt; 「アカウントを削除」</strong> から完全に削除できます。手順は <a href="./privacy">プライバシーポリシー</a>の「データの削除」の項目をご確認ください。</p>
+          <p>操作できない場合は上記のメールアドレスまでご連絡ください。</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>プレミアム機能の購入を復元したい</summary>
+        <div class="faq-body">
+          <p>メニュー &gt; アカウントから <strong>「購入を復元」</strong> を実行してください。同じ Apple ID で購入していれば、プレミアム機能の解放状態が戻ります。</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>バッテリー消費が気になります</summary>
+        <div class="faq-body">
+          <p>mymap は<strong>電車・徒歩・自転車を自動で見分け</strong>、止まっているときは省電力モードに切り替わります。長時間外出してもバッテリー消費を抑えるよう設計されています。</p>
+          <p>それでも気になる場合は、iOS の設定で位置情報利用を一時的に OFF にすることで完全に停止できます。再 ON 後は新規記録扱いになります。</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>記録に「穴」を作りたい (特定区間を残したくない)</summary>
+        <div class="faq-body">
+          <p>以下の操作で、その時点以降の自動補間を停止できます。</p>
+          <ul class="info-list" style="margin-top: 6px;">
+            <li>App Switcher からアプリをスワイプで終了する</li>
+            <li>iOS の設定で本アプリの位置情報利用を OFF にする</li>
+          </ul>
+          <p style="margin-top: 10px;">再開後の最初の位置情報からは新規記録扱いとなり、その間の経路は補間されません。</p>
+        </div>
+      </details>
+
+    </div>
+  </section>
+
+  <section>
+    <h2>アプリ情報</h2>
+    <div class="contact-card">
+      <div class="contact-row">
+        <span class="label">アプリ名</span>
+        <span>mymap — 世界を解放するマップ</span>
+      </div>
+      <div class="contact-row">
+        <span class="label">Bundle ID</span>
+        <span><code style="background: var(--bg-elev-2); padding: 2px 8px; border-radius: 4px;">com.tempurastudio.mymap</code></span>
+      </div>
+      <div class="contact-row">
+        <span class="label">プラットフォーム</span>
+        <span>iOS (App Store / TestFlight)</span>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <a href="./privacy">プライバシーポリシー</a>
+    &nbsp;・&nbsp;
+    <a href="./">トップ</a>
+    <div class="meta">© tempura-studio</div>
+  </footer>
+
+</main>
+</body>
+</html>
